@@ -41,13 +41,23 @@ function getSavedParameters() {
 }
 
 // Afficher les paramètres dans les champs du formulaire
+// function showSavedParameters(id, value) {
+//     console.log("Key : " + id + " | Value : " + value);
+//     const element = document.getElementById(id);
+//     if (element == null) {
+//         console.log("Element '" + id + "' does not exist");
+//     } else {
+//         element.value = value;
+//     }
+// }
+
 function showSavedParameters(id, value) {
     console.log("Key : " + id + " | Value : " + value);
     const element = document.getElementById(id);
     if (element == null) {
         console.log("Element '" + id + "' does not exist");
     } else {
-        element.value = value;
+        element.value = decodeHTML(value); // Decode HTML entities before displaying
     }
 }
 
@@ -91,6 +101,12 @@ btnTimeoutModifier.addEventListener("click", function () {
 // Gérer les erreurs
 function onError(error) {
     console.log(error);
+}
+
+function decodeHTML(str) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = str;
+    return textarea.value;
 }
 
 // Initialiser les paramètres par défaut au chargement

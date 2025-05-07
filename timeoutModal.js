@@ -217,11 +217,11 @@ function htmlModal(txt, title, language, graceIdleTime) {
 
     const modalTitle = document.createElement("h1");
     modalTitle.id = "titleInactivity";
-    modalTitle.textContent = title;
+    modalTitle.textContent = decodeHTML(title);
 
     const modalText = document.createElement("p");
-    modalText.id = "askInactivity";
-    modalText.textContent = txt;
+    modalText.id = "askingInactivity";
+    modalText.textContent = decodeHTML(txt);
 
     const buttonContainer = document.createElement("div");
     buttonContainer.style.textAlign = "center";
@@ -250,4 +250,10 @@ function htmlModal(txt, title, language, graceIdleTime) {
 
     // Ajouter l'événement au bouton "Continue"
     continueButton.addEventListener("click", () => hidePrompt(graceCounter), false);
+}
+
+function decodeHTML(str) {
+    const textarea = document.createElement("textarea");
+    textarea.innerHTML = str;
+    return textarea.value;
 }
