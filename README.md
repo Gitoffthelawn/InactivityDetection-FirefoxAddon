@@ -43,6 +43,7 @@ The EPN Inactivity Detection extension monitors user activity on the browser and
 
 ## Bug Fixes
 
+- **12-05-2025**: Add Default `defaultMessage` and `defaultModalTitle` in timeoutModal.js, without this, it finds nothing in memory, as there is no parameter validation via the extension interface.
 - **07-05-2025**: Decoded HTML entities and updated `modalText.id` to `askingInactivity`.
 - **29-12-2022**: Added parameters for EPNLauncher language detection, multilingual functionality, and fixed itsme timer conflict.
 - **07-12-2022**: Added timeout for itsme and exceptions for CSAM Authorized URLs.

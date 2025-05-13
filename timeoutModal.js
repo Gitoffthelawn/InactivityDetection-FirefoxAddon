@@ -27,13 +27,33 @@ function resetTimer() {
     clearInterval(timer);
 
     currSeconds = 0;
-
+    modalTime = browser.storage.local.get("modalAfter")
+    //console.log("Show Modal Popup After :" + modalTime)
     /* Set a new interval */
     timer = 
-        setInterval(function () { 
+        setInterval(function () {
         browser.storage.local.get("modalAfter").then(showModal, onError);
     }, 1000);
 }
+
+// function resetTimer() {
+//     console.log("Reset Counter !");
+//     clearInterval(timer);
+
+//     currSeconds = 0;
+
+//     // Resolve the Promise to get the value of "modalAfter"
+//     browser.storage.local.get("modalAfter").then((result) => {
+//         // Assign a default value of 10 seconds if modalAfter is undefined
+//         const modalTime = result.modalAfter ?? 60; // Default to 10 seconds
+//         console.log("Show Modal Popup After :" + modalTime);
+
+//         /* Set a new interval */
+//         timer = setInterval(function () {
+//             browser.storage.local.get("modalAfter").then(showModal, onError);
+//         }, 1000);
+//     }).catch(onError);
+// }
 
 // WARNING : Promise = cascade function processing  
 // The popup will be displayed by calling "popupLife" function
@@ -126,14 +146,19 @@ else {
 
 //Promise
 function showModal(item) {
-     let showModalAfter = item.modalAfter * 1000;
-     startIdleTimer(showModalAfter);
+    const modalAfter = item.modalAfter ?? 60; // Default to 60 seconds
+    const showModalAfter = modalAfter * 1000; // Convert to milliseconds
+    console.log("ShowModal After : " + showModalAfter);
+    startIdleTimer(showModalAfter);
 }
 
 // //Promise
 function popupLife(item) {
-     var popupLife = item.popupLife * 1000;
-     getModalParameters(popupLife);
+    const popupLife = item.popupLife ?? 30; // Default to 60 seconds
+    var showPopupLife = popupLife * 1000;
+    console.log("Popup Life : " + showPopupLife)
+     //console.log("Popup Life : " + popupLife)
+     getModalParameters(showPopupLife);
 
 }
 
@@ -154,25 +179,35 @@ async function getModalParameters(timer) {
         let languageKey = "txtFR"; // Default language is French
         let languageTitleKey = "titleFR"; // Default title is French
         let language = "fr"; // Default language is French
+        //add default value if no value
+        let defaultModalTitle = "Inactivit&eacute; d&eacute;tect&eacute;e !";
+        let defaultMessage = "Voulez-vous maintenir la session ouverte ?";
+
         if (epnLang) {
             if (epnLang.includes("nl")) {
                 languageKey = "txtNL";
                 languageTitleKey = "titleNL";
                 language = "nl";
+                defaultMessage = "Wil je de sessie open houden ?";
+                defaultModalTitle = "Inactiviteit gedetecteerd !";
             } else if (epnLang.includes("en")) {
                 languageKey = "txtEN";
                 languageTitleKey = "titleEN";
                 language = "en";
+                defaultMessage = "Do you want to keep the session open?";
+                defaultModalTitle = "Inactivity detected !";
             } else if (epnLang.includes("fr")) {
                 languageKey = "txtFR";
                 languageTitleKey = "titleFR";
                 language = "fr";
+                defaultModalTitle = "Inactivit&eacute; d&eacute;tect&eacute;e !";
+                defaultMessage = "Voulez-vous maintenir la session ouverte ?";
             }
         }
         const textData = await browser.storage.local.get(languageKey);
         const titleData = await browser.storage.local.get(languageTitleKey);
-        const modalText = textData[languageKey];
-        const modalTitle = titleData[languageTitleKey];
+        const modalText = textData[languageKey] ?? defaultMessage;
+        const modalTitle = titleData[languageTitleKey] ?? defaultModalTitle;
         console.log(`Show modal in ${languageKey}:`, modalText);
 
         // Call the appropriate function to display the modal

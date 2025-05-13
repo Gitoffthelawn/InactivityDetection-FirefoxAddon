@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Inactivity Detection",
-    "version": "2.0.2",
+    "version": "2.0.5",
     "description": "Check inactivity and close windows after a certain time.",
     "icons": {
       "48": "icons/hibernation-48.png",
